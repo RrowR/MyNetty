@@ -1,6 +1,6 @@
-package com.study;
+package com.study.own;
 
-import com.study.adapter.DiscardServerHandler;
+import com.study.own.adapter.DiscardServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
