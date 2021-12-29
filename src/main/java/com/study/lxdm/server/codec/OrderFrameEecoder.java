@@ -1,6 +1,5 @@
-package com.study.lxdm.codec;
+package com.study.lxdm.server.codec;
 
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 
 /**

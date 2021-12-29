@@ -1,4 +1,4 @@
-package com.study.lxdm.handler;
+package com.study.lxdm.server.handler;
 
 import com.study.lxdm.common.Operation;
 import com.study.lxdm.common.OperationResult;
@@ -10,7 +10,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 /**
  * atlan 19:06
  */
-public class MyMsgHandler extends SimpleChannelInboundHandler<RequestMessage> {
+public class ServerMsgHandler extends SimpleChannelInboundHandler<RequestMessage> {
     // 这里开始执行业务
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RequestMessage requestMessage) throws Exception {
