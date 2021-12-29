@@ -10,8 +10,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 /**
  * atlan 19:06
  */
-public class ServerMsgHandler extends SimpleChannelInboundHandler<RequestMessage> {
-    // 这里开始执行业务
+public class OrderServerProcessHandler extends SimpleChannelInboundHandler<RequestMessage> {
+    // 这里开始执行业务,监听发送过来的消息
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RequestMessage requestMessage) throws Exception {
         Operation operation = requestMessage.getMessageBody();

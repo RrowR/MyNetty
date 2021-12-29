@@ -1,16 +1,18 @@
 package com.study.lxdm.server;
 
+
 import com.study.lxdm.server.codec.OrderFrameDecoder;
 import com.study.lxdm.server.codec.OrderFrameEecoder;
 import com.study.lxdm.server.codec.OrderProtocolDecoder;
-import com.study.lxdm.server.codec.OrderProtocolEecoder;
-import com.study.lxdm.server.handler.MyMsgHandler;
+import com.study.lxdm.server.codec.OrderProtocolEncoder;
+import com.study.lxdm.server.handler.OrderServerProcessHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -22,32 +24,32 @@ import java.util.concurrent.ExecutionException;
 public class Server {
     public static void main(String[] args) {
         try {
-            // 创建启动雷
             ServerBootstrap serverBootstrap = new ServerBootstrap();
-            // 设置协议模式
             serverBootstrap.channel(NioServerSocketChannel.class);
-            // 设置日志
+
             serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
-            // 创建主从
-            NioEventLoopGroup boss = new NioEventLoopGroup(1);
-            NioEventLoopGroup worker = new NioEventLoopGroup(8);
-            // 设置主从
-            serverBootstrap.group(boss,worker);
+            NioEventLoopGroup boss = new NioEventLoopGroup();
+            NioEventLoopGroup worker = new NioEventLoopGroup();
+            serverBootstrap.group(boss, worker);
             // 设置处理器
-            serverBootstrap.childHandler(new ChannelInitializer<NioServerSocketChannel>() {
+            serverBootstrap.childHandler(new ChannelInitializer<NioSocketChannel>() {
                 @Override
-                protected void initChannel(NioServerSocketChannel ch) throws Exception {
+                protected void initChannel(NioSocketChannel ch) throws Exception {
                     // 从 NioServerSocketChannel 获得 ChannelPipeline
                     ChannelPipeline pipeline = ch.pipeline();
+
                     pipeline.addLast(new OrderFrameDecoder());
-                    pipeline.addLast(new OrderProtocolDecoder());
                     pipeline.addLast(new OrderFrameEecoder());
-                    pipeline.addLast(new OrderProtocolEecoder());
+
+                    pipeline.addLast(new OrderProtocolEncoder());
+                    pipeline.addLast(new OrderProtocolDecoder());
+
                     pipeline.addLast(new LoggingHandler(LogLevel.INFO));
-                    pipeline.addLast(new MyMsgHandler());
+
+                    pipeline.addLast(new OrderServerProcessHandler());
                 }
             });
-            ChannelFuture channelFuture = serverBootstrap.bind(8090).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(8091).sync();
             channelFuture.channel().closeFuture().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
