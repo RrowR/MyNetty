@@ -1,4 +1,4 @@
-package com.study.gzll.server;
+package com.study.proxy.optimize;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -37,7 +37,7 @@ public class Server {
                 pipeline.addLast("handler", new MyServerHandler());
             }
         });
-        ChannelFuture channelFuture = serverBootstrap.bind(23334).sync();
+        ChannelFuture channelFuture = serverBootstrap.bind(23333).sync();
         channelFuture.channel().closeFuture().sync();
     }
 }
