@@ -1,7 +1,5 @@
 package com.test2;
 
-import com.study.bean.User;
-import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.junit.Test;
 
 import java.util.concurrent.LinkedBlockingDeque;
